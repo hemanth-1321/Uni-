@@ -1,3 +1,5 @@
+"use client";
+
 import { FeedCard } from "@/components/FeedCard/page";
 import {
   Twitter,
@@ -8,36 +10,44 @@ import {
   Mails,
 } from "lucide-react";
 import React from "react";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
+
+interface TwiiterSideBarButton {
+  title: string;
+  icon: React.ReactNode;
+}
+
+const sideBarMenuItems: TwiiterSideBarButton[] = [
+  {
+    title: "Home",
+    icon: <HousePlus />,
+  },
+  {
+    title: "Explore",
+    icon: <Search />,
+  },
+  {
+    title: "Notifications",
+    icon: <Bell />,
+  },
+  {
+    title: "Messages",
+    icon: <Mails />,
+  },
+  {
+    title: "Profile",
+    icon: <UserRound />,
+  },
+];
 
 export default function Home() {
-  interface TwiiterSideBarButton {
-    title: string;
-    icon: React.ReactNode;
-  }
-
-  const sideBarMenuItems: TwiiterSideBarButton[] = [
-    {
-      title: "Home",
-      icon: <HousePlus />,
-    },
-    {
-      title: "Explore",
-      icon: <Search />,
-    },
-    {
-      title: "Notifications",
-      icon: <Bell />,
-    },
-    {
-      title: "Messages",
-      icon: <Mails />,
-    },
-    {
-      title: "Profile",
-      icon: <UserRound />,
-    },
-  ];
-
+  const handleLoginWithGoogle = (cred: CredentialResponse) => {
+    const googleToken = cred.credential;
+    if (!googleToken) {
+      toast.error("Googele token not found");
+    }
+  };
   return (
     <div className="overflow-hidden">
       <div className="grid grid-cols-12 h-screen w-screen px-56">
@@ -48,7 +58,6 @@ export default function Home() {
             <Twitter size={32} />
           </div>
 
-          {/* Sidebar Menu */}
           <div className="text-xl font-bold pr-20">
             <ul className="space-y-2">
               {sideBarMenuItems.map((item) => (
@@ -73,7 +82,7 @@ export default function Home() {
 
         {/* Main Content */}
         <div className="col-span-6 border-r-[0.5px] border-l-[0.5px] h-screen border-slate-400 px-8 flex flex-col overflow-hidden">
-          <div className="overflow-y-auto h-full scrollbar-hidden scroll-s">
+          <div className="overflow-y-auto h-full scrollbar-hidden smooth-scroll scroll-s">
             <FeedCard />
             <FeedCard />
             <FeedCard />
@@ -86,8 +95,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Sidebar */}
-        <div className="col-span-3"></div>
+        <div className="col-span-3 p-5">
+          <div className="p-5  rounded-lg">
+            <h1 className="text-2xl m-2">New Here?</h1>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

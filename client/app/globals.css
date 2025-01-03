@@ -27,3 +27,17 @@ body {
   -ms-overflow-style: none; /* Hides scrollbars in IE and Edge */
   scrollbar-width: none; /* Hides scrollbars in Firefox */
 }
+
+.smooth-scroll {
+  scroll-behavior: smooth; /* Enables smooth scrolling */
+}
+
+/* Optional: Adjust the scrolling speed */
+.scroll-s {
+  overflow-y: scroll; /* Ensure scrolling is enabled */
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-s * {
+  scroll-snap-align: start; /* Adds snapping behavior */
+}
